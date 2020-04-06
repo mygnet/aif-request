@@ -1,7 +1,7 @@
 {
   "name": "aif-request",
-  "version": "0.0.1",
-  "description": "Simple método que verifica si existe conectividad de internet",
+  "version": "0.0.2",
+  "description": "Simple methods to make data requests to a web server using the POST, GET methods, and the data encryption with AES algorithm.",
   "author": {
     "name": "Martin R. Mondragon Sotelo",
     "email": "mygnet@gmail.com"
@@ -25,10 +25,16 @@
   "license": "MIT",
   "private": false,
   "keywords": [
-    "online",
-    "offline",
-    "internet",
-    "connectivity"
+    "request",
+    "send",
+    "post",
+    "http",
+    "https",
+    "download",
+    "submit",
+    "upload",
+    "json",
+    "response"
   ],
   "devDependencies": {
     "babel-cli": "^6.26.0",

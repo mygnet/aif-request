@@ -33,7 +33,7 @@ Con las importaciones de ES también es posible usar componentes individuales. P
 import { get, post } from "aif-request";
 ```
 
- #### Methods
+#### Métodos
 
 * **get** (*url*, *callback*)  
 *Devuelve en la función **callback** el contenido del cuerpo de la página, dada la **url***  
@@ -74,7 +74,7 @@ rq.download(url + '/file.zip', './data', function(rs, err) {
 * **getJson** (*url*, *callback*)  
 *Devuelve en la función **callback** un JSON de la respuesta de la **url***  
 
-* **postJson** (url*, *data*, *callback*)  
+* **postJson** (*url*, *data*, *callback*)  
 *Envía el **data** que puede contener datos y archivos a la **url**  y devuelve en la función **callback** un JSON como respuesta.
 
 Por ejemplo:
@@ -95,20 +95,19 @@ rq.postJson(url + '/post-json.php', { id: 'X9918' }, function(rs, err) {
 
 #### Enviar datos cifrados
 * **getCrypt** (*url*, *secret*, [*token*], *callback*)  
-*Devuelve en la función **callback** un de la respuesta de 
+*Devuelve en la función **callback** la respuesta de 
 la **url**, solo que antes de enviarse y al recibir los 
-datos se cifran  con una llave **secret** y **token**, este 
+datos se cifran y decifran con una llave **secret** y **token**, este 
 último es opcional y debe de ser de 32 caracteres, si no 
 se define se genera uno y se adjunta al contenido que se envía.*
 
-* **postCrypt** (url*, *data*, *callback*)
+* **postCrypt** (url*, *data*, *secret*, [*token*], *callback*)
 *Envía el **data** que puede contener datos y archivos a la **url**, 
 solo que antes de enviarse y al recibir los datos se cifran  
 con una llave **secret** y **token**, este último es opcional y 
 debe de ser de 32 caracteres, si no se define se genera uno y 
 se adjunta al contenido que se envía, y solo se cifraran los 
-campos, los archivos que se agreguen pasarán en el formato de 
-archivos.*
+campos, los archivos que se agreguen se enviaran sin cifrar.*
 
 **Nota.** *El cifrado es totalmente transparente para el usuario, 
 solo que en el servidor tendrán que descifrar los datos.*

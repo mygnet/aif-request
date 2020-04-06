@@ -32,7 +32,7 @@ With ES imports it is also possible to use individual components. For example:
 import { post, get } from "aif-request";
 ```
 
- #### Methods
+#### Methods
 * **get** (*url*, *callback*)  
  *Returns in function the **callback** the content of the body of the page given the **url***  
 
@@ -95,8 +95,8 @@ rq.postJson(url + '/post-json.php', { id: 'X9918' }, function(rs, err) {
 * **getCrypt** (*url*, *secret*, [*token*], *callback*)  
 *Returns in the **callback** function a response from the **url**, only that before sending and receiving the data they are encrypted with a **secret** and **token** key, the latter is optional and must be 32 characters, if not defined one is generated and attached to the content that is sent.*
 
-* **postCrypt** (*url*, *data*, *callback*)    
-*Sends the **data** that can contain data and files to the **url**, only that before sending and receiving the data they are encrypted with a **secret** and **token** key, the latter is optional and It must be 32 characters, if not defined, one is generated and attached to the content that is sent, and only the fields will be encrypted, the files that are added will pass in the file format.*
+* **postCrypt** (*url*, *data*, *secret*, [*token*], *callback*)    
+*Sends the **data** that can contain data and files to the **url**, only that before sending and receiving the data they are encrypted with a **secret** and **token** key, The latter is optional and must be 32 characters, if not defined, one is generated and attached to the content that is sent, and only the fields will be encrypted, the files that are added will be sent without encryption.*
 
 **Note.** *Encryption is completely transparent to the user, only the data will have to be decrypted on the server.*
 
