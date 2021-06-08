@@ -1,14 +1,22 @@
 import FormData from 'form-data'
 import { Aes } from 'aif-cipher'
 import { createWriteStream } from 'fs'
-// import { stream } from 'stream'
-const getHttp = require('http').get
-const getHttps = require('https').get
+import { get as getHttp } from 'http'
+import { get as getHttps } from 'https'
 
-export function validUrl(value) {
-  return /^(https?\:)\/\/(([^:\/?#]*)(?:\:([0-9]+))?)([\/]{0,1}[^?#]*)(\?[^#]*|)(#.*|)$/i.test(value)
+/**
+  * validate the format of an email address is correct
+  * @param {string} url email address
+  * @returns returns success if correct
+ */
+export function validUrl(url) {
+  return /^(https?\:)\/\/(([^:\/?#]*)(?:\:([0-9]+))?)([\/]{0,1}[^?#]*)(\?[^#]*|)(#.*|)$/i.test(url)
 }
-
+/**
+  * parse a url getting values separately
+  * @param {string} url email address
+  * @returns returns a json object with the url data
+ */
 export function parseUrl(url) {
   const m = url.match(/^(([^:\/?#]+:)?(?:\/\/((?:([^\/?#:]*):([^\/?#:]*)@)?([^\/?#:]*)(?::([^\/?#:]*))?)))?([^?#]*)(\?[^#]*)?(#.*)?$/)
   const r = {
@@ -33,7 +41,12 @@ export function parseUrl(url) {
   r.href = r.origin + r.pathname + r.search + r.hash
   return m && r
 }
-
+/**
+  * Make the answer of a requets
+  * @param {http.IncomingMessage} res request result object
+  * @param {object} opts Options to configure
+  * @param {function} callback Function that is invoked at the end of the process
+ */
 function response(res, opts, callback) {
   let err = null
   if (!res) return callback(null, new Error('an error occurred with the answer'))
@@ -72,6 +85,13 @@ function response(res, opts, callback) {
   })
 }
 
+/**
+  * Make a request to a url
+  * @param {string} url Email address
+  * @param {object} data Data to be sent
+  * @param {object} opts Options
+  * @param {function} callback Method that is invoked at the end of the process
+ */
 export function send(url, data, opts, callback) {
   if (typeof opts === 'function') {
     callback = opts
@@ -99,26 +119,56 @@ export function send(url, data, opts, callback) {
   } else callback(null, 'url not valid')
 }
 
+/**
+  * Make a POST request with data encryption, waiting for a json result
+  * @param {string} url Email address
+  * @param {object} data Data to be sent
+  * @param {string} secret secret word for encryption
+  * @param {string} token Token that will be used to initialize the encryption verctor
+  * @param {function} callback Method that is invoked at the end of the process
+ */
 export function postCryptJson(url, data, secret, token, callback) {
   callback = typeof token === 'function' ? token : callback
   token = typeof token === 'string' ? token : ''
   send(url, data, { type: 'json', secret: secret, token: token }, callback)
 }
-
+/** 
+  * Make a POST request with data encryption
+  * @param {string} url Email address
+  * @param {object} data Data to be sent
+  * @param {string} secret secret word for encryption
+  * @param {string} token Token that will be used to initialize the encryption verctor
+  * @param {function} callback Method that is invoked at the end of the process
+ */
 export function postCrypt(url, data, secret, token, callback) {
   callback = typeof token === 'function' ? token : callback
   token = typeof token === 'string' ? token : ''
   send(url, data, { secret: secret, token: token }, callback)
 }
-
+/**
+  * Make a POST request waiting for a json result
+  * @param {string} url Email address
+  * @param {object} data Data to be sent
+  * @param {function} callback Method that is invoked at the end of the process
+ */
 export function postJson(url, data, callback) {
   send(url, data, { type: 'json' }, callback)
 }
-
+/**
+  * Make a POST request
+  * @param {string} url Email address
+  * @param {object} data Data to be sent
+  * @param {function} callback Method that is invoked at the end of the process
+ */
 export function post(url, data, callback) {
   send(url, data, callback)
 }
-
+/**
+  * Make a GET request
+  * @param {string} url Email address
+  * @param {object} opts Configuration options
+  * @param {function} callback Method that is invoked at the end of the process
+ */
 export function content(url, opts, callback) {
   callback = typeof opts === 'function' ? opts : callback
   opts = typeof opts === 'object' ? opts : {}
@@ -135,22 +185,49 @@ export function content(url, opts, callback) {
   }
 }
 
+/**
+  * Make a GET request
+  * @param {string} url Email address
+  * @param {function} callback Method that is invoked at the end of the process
+ */
 export function get(url, callback) {
   content(url, callback)
 }
-
+/**
+  * Make a GET request with json result
+  * @param {string} url Email address
+  * @param {function} callback Method that is invoked at the end of the process 
+ */
 export function getJson(url, callback) {
   content(url, { type: 'json' }, callback)
 }
-
+/** 
+  * Make a GET request with data encryption
+  * @param {string} url Email address
+  * @param {string} secret secret word for encryption
+  * @param {string} token Token that will be used to initialize the encryption verctor
+  * @param {function} callback Method that is invoked at the end of the process
+ */
 export function getCrypt(url, secret, token, callback) {
   content(url, { secret: secret, token: token }, callback)
 }
-
+/** 
+  * Make a request of type GET with data encryption, waiting for a JSON result
+  * @param {string} url Email address
+  * @param {string} secret secret word for encryption
+  * @param {string} token Token that will be used to initialize the encryption verctor
+  * @param {function} callback Method that is invoked at the end of the process
+ */
 export function getCryptJson(url, secret, token, callback) {
   content(url, { type: 'json', secret: secret, token: token }, callback)
 }
 
+/**
+  * Download a file from a remote hist
+  * @param {string} url Email address
+  * @param {string} dst Destination path for download
+  * @param {function} callback Method that is invoked at the end of the process
+ */
 export function download(url, dst, callback) {
   url = parseUrl(url)
   if (url) {

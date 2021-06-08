@@ -1,5 +1,19 @@
 {
   "presets": [
+    ["minify", {
+      "mangle": {
+         "exclude": { 
+           "url": true, 
+           "res": true,
+           "opts":true,
+           "callback":true,
+           "data":true,
+           "secret":true,
+           "token":true,
+           "dst": true
+        } 
+      }
+    }],
     ["es2015", {
         "loose": true
     }]
